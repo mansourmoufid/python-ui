@@ -33,3 +33,76 @@ except (AssertionError, OSError):
         except OSError:
             continue
         break
+
+
+class _InitOptions(ctypes.Structure):
+    _fields_ = [
+        ('size', ctypes.c_size_t),
+    ]
+
+
+# const char *uiInit(uiInitOptions *options);
+_init = libui.uiInit
+_init.restype = ctypes.c_char_p
+_init.argtypes = [
+    ctypes.POINTER(_InitOptions),
+]
+
+
+# void uiUninit(void);
+_uninit = libui.uiUninit
+_uninit.restype = None
+_uninit.argtypes = []
+
+
+# void uiMain(void);
+_main = libui.uiMain
+_main.restype = None
+_main.argtype = []
+
+
+# void uiQuit(void);
+_quit = libui.uiQuit
+_quit.restype = None
+_quit.argtypes = []
+
+
+# void uiOnShouldQuit(int (*f)(void *data), void *data);
+_on_should_quit = libui.uiOnShouldQuit
+_on_should_quit.restype = None
+_on_should_quit.argtypes = [
+    ctypes.CFUNCTYPE(
+        ctypes.c_int,
+        ctypes.c_void_p,
+    ),
+    ctypes.c_void_p,
+]
+
+
+class UI(object):
+
+    def __init__(self):
+
+        options = _InitOptions()
+        ctypes.memset(ctypes.pointer(options), 0, ctypes.sizeof(options))
+        assert _init(ctypes.pointer(options)) is None
+
+        def __on_should_quit(data):
+            return self.on_should_quit()
+
+        cb = _on_should_quit.argtypes[0](__on_should_quit)
+        _on_should_quit(cb, None)
+        self.callbacks = [cb]
+
+    def main(self):
+        _main()
+
+    def on_should_quit(self):
+        return 1
+
+    def quit(self):
+        _quit()
+        return 0
+
+    def __del__(self):
+        _uninit()
