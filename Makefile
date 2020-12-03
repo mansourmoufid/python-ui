@@ -3,6 +3,10 @@ check:
 	pyflakes ui/*.py
 	pycodestyle ui/*.py
 
+.PHONY: test
+test:
+	py.test
+
 .PHONY: cleanup
 cleanup:
 	rm -f ui/*.pyc ui/*.pyd ui/*.pyo
