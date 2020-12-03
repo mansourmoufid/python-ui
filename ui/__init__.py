@@ -13,6 +13,7 @@ __status__ = 'Development'
 
 __all__ = [
     'control',
+    'window',
 ]
 
 
@@ -107,3 +108,26 @@ class UI(object):
 
     def __del__(self):
         _uninit()
+
+
+_encoding = 'utf-8'
+
+
+def decode(x):
+    if x is None:
+        return None
+    try:
+        s = x.decode(_encoding)
+    except AttributeError:
+        s = x
+    return s
+
+
+def encode(s):
+    if s is None:
+        return None
+    try:
+        x = s.decode(_encoding)
+    except AttributeError:
+        x = s
+    return x.encode(_encoding) + b'\x00' * 2
