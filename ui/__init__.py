@@ -13,6 +13,7 @@ __status__ = 'Development'
 
 __all__ = [
     'box',
+    'button',
     'control',
     'timer',
     'window',
