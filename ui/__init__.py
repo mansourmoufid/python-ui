@@ -15,6 +15,7 @@ __all__ = [
     'box',
     'button',
     'control',
+    'entry',
     'spinbox',
     'timer',
     'window',
