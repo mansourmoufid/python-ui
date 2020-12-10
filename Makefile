@@ -1,3 +1,8 @@
+all: README.rst
+
+README.rst: README.md
+	pandoc README.md -o README.rst
+
 .PHONY: check
 check:
 	pyflakes ui/*.py
@@ -14,3 +19,4 @@ cleanup:
 
 .PHONY: clean
 clean: cleanup
+	rm -f README.rst
