@@ -19,6 +19,7 @@ __all__ = [
     'control',
     'entry',
     'group',
+    'label',
     'spinbox',
     'timer',
     'window',
