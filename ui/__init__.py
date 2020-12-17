@@ -21,6 +21,7 @@ __all__ = [
     'group',
     'label',
     'spinbox',
+    'tab',
     'timer',
     'window',
 ]
