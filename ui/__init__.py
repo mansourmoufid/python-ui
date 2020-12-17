@@ -14,6 +14,7 @@ __status__ = 'Development'
 __all__ = [
     'box',
     'button',
+    'checkbox',
     'control',
     'entry',
     'group',
