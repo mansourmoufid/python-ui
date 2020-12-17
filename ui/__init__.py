@@ -15,6 +15,7 @@ __all__ = [
     'box',
     'button',
     'checkbox',
+    'combobox',
     'control',
     'entry',
     'group',
