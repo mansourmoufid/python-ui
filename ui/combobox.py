@@ -65,7 +65,7 @@ class Combobox(control.Control):
 
         super(Combobox, self).__init__()
 
-        assert items is None or isinstance(items, list)
+        assert items is None or isinstance(items, (list, tuple))
         self.items = items or []
 
         self.combobox = ctypes.cast(
