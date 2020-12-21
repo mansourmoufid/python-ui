@@ -61,7 +61,7 @@ _new_combobox.argtypes = []
 
 class Combobox(control.Control):
 
-    def __init__(self, items=None):
+    def __init__(self, items=None, on_selected=None):
 
         super(Combobox, self).__init__()
 
@@ -77,12 +77,15 @@ class Combobox(control.Control):
 
         for item in self.items:
             self.append(item)
+        self.set_on_selected(on_selected)
 
     def on_selected(self):
         pass
 
-    def set_on_selected(self, f):
+    def set_on_selected(self, f=None):
 
+        if f is None:
+            return
         self.on_selected = f
 
         def _on_selected(combobox, data):
