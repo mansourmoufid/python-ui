@@ -71,7 +71,7 @@ _checkbox_set_checked.argtypes = [
 
 class Checkbox(control.Control):
 
-    def __init__(self, text, checked=False):
+    def __init__(self, text, checked=False, on_toggled=None):
 
         super(Checkbox, self).__init__()
 
@@ -84,6 +84,7 @@ class Checkbox(control.Control):
         self.callbacks = []
 
         self.checked(checked)
+        self.set_on_toggled(on_toggled)
 
     def text(self, x=None):
         assert x is None or isinstance(x, str)
@@ -95,8 +96,10 @@ class Checkbox(control.Control):
     def on_toggled(self):
         pass
 
-    def set_on_toggled(self, f):
+    def set_on_toggled(self, f=None):
 
+        if f is None:
+            return
         self.on_toggled = f
 
         def _on_toggled(checkbox, data):
