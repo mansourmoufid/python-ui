@@ -63,8 +63,7 @@ class Button(control.Control):
         self.ctrl = self.control(self.button)
 
         self.callbacks = []
-        if on_clicked is not None:
-            self.set_on_clicked(on_clicked)
+        self.set_on_clicked(on_clicked)
 
     def text(self, x=None):
         assert x is None or isinstance(x, str)
@@ -73,8 +72,10 @@ class Button(control.Control):
         else:
             _button_set_text(self.button, encode(x))
 
-    def set_on_clicked(self, f):
+    def set_on_clicked(self, f=None):
 
+        if f is None:
+            return
         self.on_clicked = f
 
         def on_clicked(button, data):
