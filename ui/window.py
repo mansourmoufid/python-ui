@@ -1,12 +1,29 @@
 import ctypes
 
 from . import control
-from . import encode
+from . import decode, encode
 from . import libui
 
 
 class _Window(ctypes.Structure):
     pass
+
+
+# char *uiWindowTitle(uiWindow *w);
+_window_title = libui.uiWindowTitle
+_window_title.restype = ctypes.c_char_p
+_window_title.argtypes = [
+    ctypes.POINTER(_Window),
+]
+
+
+# void uiWindowSetTitle(uiWindow *w, const char *title);
+_window_set_title = libui.uiWindowSetTitle
+_window_set_title.restype = None
+_window_set_title.argtypes = [
+    ctypes.POINTER(_Window),
+    ctypes.c_char_p,
+]
 
 
 # void uiWindowContentSize(uiWindow *w, int *width, int *height);
@@ -161,6 +178,13 @@ class Window(control.Control):
         self.callbacks += [cb]
 
         self.margined(margined)
+
+    def title(self, x=None):
+        assert x is None or isinstance(x, str)
+        if x is None:
+            return decode(_window_title(self.window))
+        else:
+            _window_set_title(self.window, encode(x))
 
     def size(self, x=None):
         assert x is None or isinstance(x, (list, tuple))
