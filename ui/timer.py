@@ -1,4 +1,6 @@
 import ctypes
+import sys
+import traceback
 
 from . import libui
 
@@ -23,8 +25,17 @@ class Timer(object):
         self.callbacks = []
 
     def after(self, t, f):
+
         assert isinstance(t, float)
-        cb = _timer.argtypes[1](f)
+
+        def _f(data):
+            try:
+                return f()
+            except:  # noqa
+                traceback.print_exc(file=sys.stderr)
+                return 0
+
+        cb = _timer.argtypes[1](_f)
         _timer(int(t * 1000), cb, None)
         self.callbacks += [cb]
 
