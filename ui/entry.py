@@ -63,13 +63,15 @@ _entry_set_read_only.argtypes = [
 
 class EntryControl(control.Control):
 
-    def __init__(self):
+    def __init__(self, text=None, readonly=False):
         super(EntryControl, self).__init__()
         self.ctrl = self.control(self.entry)
         self.callbacks = []
         cb = _entry_on_changed.argtypes[1](self.on_changed)
         _entry_on_changed(self.entry, cb, None)
         self.callbacks += [cb]
+        self.text(text)
+        self.readonly(readonly)
 
     def text(self, x=None):
         assert x is None or isinstance(x, str)
