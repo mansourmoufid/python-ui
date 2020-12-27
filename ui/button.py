@@ -78,10 +78,10 @@ class Button(control.Control):
             return
         self.on_clicked = f
 
-        def on_clicked(button, data):
+        def _on_clicked(button, data):
             return self.on_clicked()
 
-        cb = _button_on_clicked.argtypes[1](on_clicked)
+        cb = _button_on_clicked.argtypes[1](_on_clicked)
         _button_on_clicked(self.button, cb, None)
         self.callbacks += [cb]
 
