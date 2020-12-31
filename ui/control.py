@@ -7,6 +7,14 @@ class _Control(ctypes.Structure):
     pass
 
 
+# uintptr_t uiControlHandle(uiControl *);
+_control_handle = libui.uiControlHandle
+_control_handle.restype = ctypes.c_ulonglong
+_control_handle.argtypes = [
+    ctypes.POINTER(_Control),
+]
+
+
 # int uiControlVisible(uiControl *);
 _control_visible = libui.uiControlVisible
 _control_visible.restype = ctypes.c_int
@@ -81,6 +89,9 @@ class Control(object):
         x = this or self.ctrl
         assert isinstance(x, ctypes._Pointer)
         return ctypes.cast(x, ctypes.POINTER(_Control))
+
+    def handle(self):
+        return ctypes.c_void_p(_control_handle(self.ctrl))
 
     def enabled(self, x=None):
         if self.ctrl is None:
