@@ -17,6 +17,7 @@ __all__ = [
     'checkbox',
     'combobox',
     'control',
+    'dialog',
     'entry',
     'group',
     'label',
