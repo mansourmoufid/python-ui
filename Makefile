@@ -7,6 +7,7 @@ README.rst: README.md
 check:
 	pyflakes ui/*.py
 	pycodestyle ui/*.py
+	mypy ui/*.py
 
 .PHONY: test
 test:

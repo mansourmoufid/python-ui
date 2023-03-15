@@ -2,6 +2,7 @@
 
 
 import ctypes
+import typing
 
 
 __author__ = 'Mansour Moufid'
@@ -71,7 +72,7 @@ _uninit.argtypes = []
 # void uiMain(void);
 _main = libui.uiMain
 _main.restype = None
-_main.argtype = []
+_main.argtypes = []
 
 
 # void uiQuit(void);
@@ -124,7 +125,7 @@ class UI(object):
 _encoding = 'utf-8'
 
 
-def decode(x):
+def decode(x) -> typing.Optional[str]:
     if x is None:
         return None
     try:
@@ -134,7 +135,7 @@ def decode(x):
     return s
 
 
-def encode(s):
+def encode(s) -> typing.Optional[bytes]:
     if s is None:
         return None
     try:
