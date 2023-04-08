@@ -58,8 +58,8 @@ _new_vertical_box.argtypes = []
 
 class Box(control.Control):
 
-    def __init__(self, padded=True):
-        super(Box, self).__init__()
+    def __init__(self, padded=True, **kwargs):
+        super(Box, self).__init__(**kwargs)
         self.ctrl = self.box
         self.padded(padded)
 

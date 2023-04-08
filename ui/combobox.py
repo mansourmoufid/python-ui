@@ -61,9 +61,9 @@ _new_combobox.argtypes = []
 
 class Combobox(control.Control):
 
-    def __init__(self, items=None, on_selected=None):
+    def __init__(self, items=None, on_selected=None, **kwargs):
 
-        super(Combobox, self).__init__()
+        super(Combobox, self).__init__(**kwargs)
 
         assert items is None or isinstance(items, (list, tuple))
         self.items = items or []

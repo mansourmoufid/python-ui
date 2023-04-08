@@ -63,8 +63,8 @@ _entry_set_read_only.argtypes = [
 
 class EntryControl(control.Control):
 
-    def __init__(self, text=None, readonly=False):
-        super(EntryControl, self).__init__()
+    def __init__(self, text=None, readonly=False, **kwargs):
+        super(EntryControl, self).__init__(**kwargs)
         self.ctrl = self.entry
         self.callbacks = []
         cb = _entry_on_changed.argtypes[1](self.on_changed)

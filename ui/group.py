@@ -62,8 +62,8 @@ _new_group.argtypes = [
 
 class Group(control.Control):
 
-    def __init__(self, title, margined=False):
-        super(Group, self).__init__()
+    def __init__(self, title, margined=False, **kwargs):
+        super(Group, self).__init__(**kwargs)
         assert isinstance(title, str)
         self.group = _new_group(encode(title))
         self.ctrl = self.group

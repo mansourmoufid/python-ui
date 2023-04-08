@@ -54,9 +54,9 @@ _new_spinbox.argtypes = [
 
 class Spinbox(control.Control):
 
-    def __init__(self, min=0, max=100, value=0):
+    def __init__(self, min=0, max=100, value=0, **kwargs):
 
-        super(Spinbox, self).__init__()
+        super(Spinbox, self).__init__(**kwargs)
 
         assert isinstance(min, int)
         assert isinstance(max, int)

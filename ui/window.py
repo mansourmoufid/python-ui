@@ -143,9 +143,11 @@ _new_window.argtypes = [
 
 class Window(control.Control):
 
-    def __init__(self, name=None, size=None, menubar=False, margined=True):
+    def __init__(self, name=None, size=None, menubar=False, **kwargs):
 
-        super(Window, self).__init__()
+        margined = kwargs.pop('margined', True)
+
+        super(Window, self).__init__(**kwargs)
 
         assert name is None or isinstance(name, str)
 

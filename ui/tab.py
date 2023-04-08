@@ -47,8 +47,8 @@ _new_tab.argtypes = []
 
 class Tab(control.Control):
 
-    def __init__(self):
-        super(Tab, self).__init__()
+    def __init__(self, **kwargs):
+        super(Tab, self).__init__(**kwargs)
         self.tab = _new_tab()
         self.ctrl = self.tab
         self.pages = collections.OrderedDict()
