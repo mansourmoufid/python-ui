@@ -1,4 +1,5 @@
 import ctypes
+import typing
 
 from . import libui
 
@@ -81,47 +82,57 @@ _control_destroy.argtypes = [
 
 class Control(object):
 
-    def __init__(self, enabled=None, visible=None):
+    def __init__(
+        self,
+        enabled: typing.Optional[bool] = None,
+        visible: typing.Optional[bool] = None,
+    ):
         super(Control, self).__init__()
-        self.ctrl = None
+        self.ctrl: typing.Optional[ctypes._Pointer] = None
         if enabled is not None:
             self.enabled(enabled)
         if visible is not None:
             self.visible(visible)
 
-    def control(self):
+    def control(self) -> typing.Optional[ctypes._Pointer]:
         if self.ctrl is None:
             return None
         return ctypes.cast(self.ctrl, ctypes.POINTER(_Control))
 
-    def handle(self):
+    def handle(self) -> ctypes.c_void_p:
         return ctypes.c_void_p(_control_handle(self.ctrl))
 
-    def enabled(self, x=None):
+    def enabled(
+        self,
+        x: typing.Optional[bool] = None,
+    ) -> typing.Optional[bool]:
         if self.control() is None:
             return False
         if x is None:
             return not _control_enabled(self.control()) == 0
         else:
-            assert isinstance(x, bool)
             if x and not self.enabled():
                 _control_enable(self.control())
             if not x and self.enabled():
                 _control_disable(self.control())
+        return None
 
-    def visible(self, x=None):
+    def visible(
+        self,
+        x: typing.Optional[bool] = None,
+    ) -> typing.Optional[bool]:
         if self.control() is None:
             return False
         if x is None:
             return not _control_visible(self.control()) == 0
         else:
-            assert isinstance(x, bool)
             if x:
                 _control_show(self.control())
             else:
                 _control_hide(self.control())
+        return None
 
-    def destroy(self):
+    def destroy(self) -> None:
         if self.control() is None:
             return
         _control_destroy(self.control())
