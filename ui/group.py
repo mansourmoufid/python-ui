@@ -66,7 +66,7 @@ class Group(control.Control):
         super(Group, self).__init__()
         assert isinstance(title, str)
         self.group = _new_group(encode(title))
-        self.ctrl = self.control(self.group)
+        self.ctrl = self.group
         self.margined(margined)
 
     def title(self, x=None):

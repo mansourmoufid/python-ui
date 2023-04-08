@@ -45,7 +45,7 @@ class Label(control.Control):
             _new_label(encode(text or '')),
             ctypes.POINTER(_Label)
         )
-        self.ctrl = self.control(self.label)
+        self.ctrl = self.label
 
     def text(self, x=None):
         assert x is None or isinstance(x, str)

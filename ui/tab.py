@@ -50,7 +50,7 @@ class Tab(control.Control):
     def __init__(self):
         super(Tab, self).__init__()
         self.tab = _new_tab()
-        self.ctrl = self.control(self.tab)
+        self.ctrl = self.tab
         self.pages = collections.OrderedDict()
 
     def append(self, name, x, margined=False):

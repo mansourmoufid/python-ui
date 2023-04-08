@@ -80,7 +80,7 @@ class Checkbox(control.Control):
             _new_checkbox(encode(text)),
             ctypes.POINTER(_Checkbox),
         )
-        self.ctrl = self.control(self.checkbox)
+        self.ctrl = self.checkbox
         self.callbacks = []
 
         self.checked(checked)

@@ -161,7 +161,7 @@ class Window(control.Control):
             self.height,
             1 if menubar else 0
         )
-        self.ctrl = self.control(self.window)
+        self.ctrl = self.window
         self.callbacks = []
 
         def _on_closing(window, data):

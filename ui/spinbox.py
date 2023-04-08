@@ -63,7 +63,7 @@ class Spinbox(control.Control):
         self.min, self.max = min, max
 
         self.spinbox = _new_spinbox(self.min, self.max)
-        self.ctrl = self.control(self.spinbox)
+        self.ctrl = self.spinbox
 
         def onchanged(spinbox, data):
             return self.on_changed()

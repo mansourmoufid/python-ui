@@ -72,7 +72,7 @@ class Combobox(control.Control):
             _new_combobox(),
             ctypes.POINTER(_Combobox)
         )
-        self.ctrl = self.control(self.combobox)
+        self.ctrl = self.combobox
         self.callbacks = []
 
         for item in self.items:

@@ -65,7 +65,7 @@ class EntryControl(control.Control):
 
     def __init__(self, text=None, readonly=False):
         super(EntryControl, self).__init__()
-        self.ctrl = self.control(self.entry)
+        self.ctrl = self.entry
         self.callbacks = []
         cb = _entry_on_changed.argtypes[1](self.on_changed)
         _entry_on_changed(self.entry, cb, None)

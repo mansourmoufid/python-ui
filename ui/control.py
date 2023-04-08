@@ -89,40 +89,40 @@ class Control(object):
         if visible is not None:
             self.visible(visible)
 
-    def control(self, this=None):
-        x = this or self.ctrl
-        assert isinstance(x, ctypes._Pointer)
-        return ctypes.cast(x, ctypes.POINTER(_Control))
+    def control(self):
+        if self.ctrl is None:
+            return None
+        return ctypes.cast(self.ctrl, ctypes.POINTER(_Control))
 
     def handle(self):
         return ctypes.c_void_p(_control_handle(self.ctrl))
 
     def enabled(self, x=None):
-        if self.ctrl is None:
+        if self.control() is None:
             return False
         if x is None:
-            return not _control_enabled(self.ctrl) == 0
+            return not _control_enabled(self.control()) == 0
         else:
             assert isinstance(x, bool)
             if x and not self.enabled():
-                _control_enable(self.ctrl)
+                _control_enable(self.control())
             if not x and self.enabled():
-                _control_disable(self.ctrl)
+                _control_disable(self.control())
 
     def visible(self, x=None):
-        if self.ctrl is None:
+        if self.control() is None:
             return False
         if x is None:
-            return not _control_visible(self.ctrl) == 0
+            return not _control_visible(self.control()) == 0
         else:
             assert isinstance(x, bool)
             if x:
-                _control_show(self.ctrl)
+                _control_show(self.control())
             else:
-                _control_hide(self.ctrl)
+                _control_hide(self.control())
 
     def destroy(self):
-        if self.ctrl is None:
+        if self.control() is None:
             return
         _control_destroy(self.control())
         self.ctrl = None

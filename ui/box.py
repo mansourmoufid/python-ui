@@ -60,7 +60,7 @@ class Box(control.Control):
 
     def __init__(self, padded=True):
         super(Box, self).__init__()
-        self.ctrl = self.control(self.box)
+        self.ctrl = self.box
         self.padded(padded)
 
     def append(self, x, stretchy=False):

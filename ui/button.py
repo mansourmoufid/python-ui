@@ -60,7 +60,7 @@ class Button(control.Control):
 
         assert isinstance(text, str)
         self.button = _new_button(encode(text))
-        self.ctrl = self.control(self.button)
+        self.ctrl = self.button
 
         self.callbacks = []
         self.set_on_clicked(on_clicked)
