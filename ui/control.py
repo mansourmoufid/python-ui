@@ -81,9 +81,13 @@ _control_destroy.argtypes = [
 
 class Control(object):
 
-    def __init__(self):
+    def __init__(self, enabled=None, visible=None):
         super(Control, self).__init__()
         self.ctrl = None
+        if enabled is not None:
+            self.enabled(enabled)
+        if visible is not None:
+            self.visible(visible)
 
     def control(self, this=None):
         x = this or self.ctrl
@@ -100,9 +104,9 @@ class Control(object):
             return not _control_enabled(self.ctrl) == 0
         else:
             assert isinstance(x, bool)
-            if x:
+            if x and not self.enabled():
                 _control_enable(self.ctrl)
-            else:
+            if not x and self.enabled():
                 _control_disable(self.ctrl)
 
     def visible(self, x=None):
