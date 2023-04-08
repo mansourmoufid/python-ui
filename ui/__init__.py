@@ -22,6 +22,7 @@ __all__ = [
     'entry',
     'group',
     'label',
+    'menu',
     'spinbox',
     'tab',
     'timer',
@@ -143,3 +144,7 @@ def encode(s) -> typing.Optional[bytes]:
     except AttributeError:
         x = s
     return x.encode(_encoding) + b'\x00' * 2
+
+
+def nop():
+    pass
