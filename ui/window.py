@@ -145,6 +145,7 @@ class Window(control.Control):
 
     def __init__(self, name=None, size=None, menubar=False, **kwargs):
 
+        border = kwargs.pop('border', True)
         margined = kwargs.pop('margined', True)
 
         super(Window, self).__init__(**kwargs)
@@ -155,6 +156,7 @@ class Window(control.Control):
         self.width, self.height = size or (100, 100)
 
         assert isinstance(menubar, bool)
+        assert isinstance(border, bool)
         assert isinstance(margined, bool)
 
         self.window = _new_window(
@@ -179,6 +181,7 @@ class Window(control.Control):
         _window_on_content_size_changed(self.window, cb, None)
         self.callbacks += [cb]
 
+        self.border(border)
         self.margined(margined)
 
     def title(self, x=None):
