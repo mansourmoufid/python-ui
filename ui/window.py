@@ -161,8 +161,8 @@ class Window(control.Control):
 
         self.window = _new_window(
             encode(name),
-            self.width,
-            self.height,
+            int(self.width),
+            int(self.height),
             1 if menubar else 0
         )
         self.ctrl = self.window
@@ -204,8 +204,9 @@ class Window(control.Control):
             return (w.value, h.value)
         else:
             w, h = x
-            assert isinstance(w, int) and isinstance(h, int)
-            _window_set_content_size(self.window, w, h)
+            assert isinstance(w, (float, int))
+            assert isinstance(h, (float, int))
+            _window_set_content_size(self.window, int(w), int(h))
 
     def border(self, x=None):
         assert x is None or isinstance(x, bool)
