@@ -26,7 +26,7 @@ class Timer(object):
 
     def after(self, t, f):
 
-        assert isinstance(t, float)
+        assert isinstance(t, (int, float))
 
         def _f(data):
             try:
@@ -36,7 +36,7 @@ class Timer(object):
                 return 0
 
         cb = _timer.argtypes[1](_f)
-        _timer(int(t * 1000), cb, None)
+        _timer(int(float(t) * 1000), cb, None)
         self.callbacks += [cb]
 
     def __del__(self):
