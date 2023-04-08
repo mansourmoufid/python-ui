@@ -99,6 +99,7 @@ _new_entry.argtypes = []
 
 class Entry(EntryControl):
 
+    @classmethod
     def __new__(cls, *args, **kwargs):
         x = super(Entry, cls).__new__(cls)
         x.entry = _new_entry()
@@ -113,6 +114,7 @@ _new_search_entry.argtypes = []
 
 class SearchEntry(EntryControl):
 
+    @classmethod
     def __new__(cls, *args, **kwargs):
         x = super(SearchEntry, cls).__new__(cls)
         x.entry = _new_search_entry()

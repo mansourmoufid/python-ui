@@ -86,6 +86,7 @@ class Box(control.Control):
 
 class HorizontalBox(Box):
 
+    @classmethod
     def __new__(cls, *args, **kwargs):
         x = super(HorizontalBox, cls).__new__(cls)
         x.box = _new_horizontal_box()
@@ -94,6 +95,7 @@ class HorizontalBox(Box):
 
 class VerticalBox(Box):
 
+    @classmethod
     def __new__(cls, *args, **kwargs):
         x = super(VerticalBox, cls).__new__(cls)
         x.box = _new_vertical_box()
