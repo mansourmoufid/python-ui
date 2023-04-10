@@ -1,4 +1,5 @@
 import ctypes
+import typing
 
 from . import control
 from . import libui
@@ -58,28 +59,31 @@ _new_vertical_box.argtypes = []
 
 class Box(control.Control):
 
-    def __init__(self, padded=True, **kwargs):
+    box: typing.Optional[ctypes._Pointer] = None
+
+    def __init__(self, padded: bool = True, **kwargs):
         super(Box, self).__init__(**kwargs)
         self.ctrl = self.box
         self.padded(padded)
 
-    def append(self, x, stretchy=False):
-        assert isinstance(x, control.Control)
-        assert isinstance(stretchy, bool)
+    def append(self, x: control.Control, stretchy: bool = False) -> None:
         _box_append(self.box, x.control(), 1 if stretchy else 0)
 
-    def delete(self, i):
-        assert isinstance(i, int)
+    def delete(self, i: int) -> None:
         _box_delete(self.box, i)
+        return
 
-    def padded(self, x=None):
-        assert x is None or isinstance(x, bool)
+    def padded(
+        self,
+        x: typing.Optional[bool] = None,
+    ) -> typing.Optional[bool]:
         if x is None:
             return not _box_padded(self.box) == 0
         else:
             _box_set_padded(self.box, 1 if x else 0)
+        return None
 
-    def __add__(self, x):
+    def __add__(self, x: control.Control) -> control.Control:
         self.append(x)
         return self
 
