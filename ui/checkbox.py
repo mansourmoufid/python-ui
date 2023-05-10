@@ -73,7 +73,7 @@ class Checkbox(control.Control):
 
     def __init__(self, text, checked=False, on_toggled=None, **kwargs):
 
-        super(Checkbox, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         assert isinstance(text, str)
         self.checkbox = ctypes.cast(

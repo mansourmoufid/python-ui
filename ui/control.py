@@ -87,7 +87,7 @@ class Control(object):
         enabled: typing.Optional[bool] = None,
         visible: typing.Optional[bool] = None,
     ):
-        super(Control, self).__init__()
+        super().__init__()
         self.ctrl: typing.Optional[ctypes._Pointer] = None
         if enabled is not None:
             self.enabled(enabled)

@@ -148,9 +148,9 @@ class Window(control.Control):
         border = kwargs.pop('border', True)
         margined = kwargs.pop('margined', True)
 
-        super(Window, self).__init__(**kwargs)
 
         assert name is None or isinstance(name, str)
+        super().__init__(**kwargs)
 
         assert size is None or isinstance(size, (list, tuple))
         self.width, self.height = size or (100, 100)

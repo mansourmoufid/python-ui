@@ -56,7 +56,7 @@ class Button(control.Control):
 
     def __init__(self, text, on_clicked=None, **kwargs):
 
-        super(Button, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         assert isinstance(text, str)
         self.button = _new_button(encode(text))

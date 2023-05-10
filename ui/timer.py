@@ -21,7 +21,7 @@ _timer.argtypes = [
 class Timer(object):
 
     def __init__(self):
-        super(Timer, self).__init__()
+        super().__init__()
         self.callbacks = []
 
     def after(self, t, f):

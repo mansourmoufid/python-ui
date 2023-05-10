@@ -65,7 +65,7 @@ class Item(object):
 
     def __init__(self, item, type=None, on_clicked=None):
 
-        super(Item, self).__init__()
+        super().__init__()
 
         self.item = ctypes.cast(item, ctypes.POINTER(_MenuItem))
         self.type = type
@@ -172,7 +172,7 @@ _menu_delete_item.argtypes = [
 class Menu(object):
 
     def __init__(self, name):
-        super(Menu, self).__init__()
+        super().__init__()
         assert isinstance(name, str)
         self.name = name
         self.menu = ctypes.cast(

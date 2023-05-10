@@ -38,7 +38,7 @@ class Label(control.Control):
 
     def __init__(self, text=None, **kwargs):
 
-        super(Label, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         assert text is None or isinstance(text, str)
         self.label = ctypes.cast(

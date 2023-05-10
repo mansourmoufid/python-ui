@@ -62,7 +62,7 @@ class Box(control.Control):
     box: typing.Optional[ctypes._Pointer] = None
 
     def __init__(self, padded: bool = True, **kwargs):
-        super(Box, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.ctrl = self.box
         self.padded(padded)
 
