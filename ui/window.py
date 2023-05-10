@@ -46,6 +46,13 @@ _window_set_content_size.argtypes = [
 ]
 
 
+_window_on_content_size_changed_callback_t = ctypes.CFUNCTYPE(
+    None,
+    ctypes.POINTER(_Window),
+    ctypes.c_void_p,
+)
+
+
 # void uiWindowOnContentSizeChanged(
 #   uiWindow *w,
 #   void (*f)(uiWindow *, void *),
@@ -55,13 +62,16 @@ _window_on_content_size_changed = libui.uiWindowOnContentSizeChanged
 _window_on_content_size_changed.restype = None
 _window_on_content_size_changed.argtypes = [
     ctypes.POINTER(_Window),
-    ctypes.CFUNCTYPE(
-        None,
-        ctypes.POINTER(_Window),
-        ctypes.c_void_p,
-    ),
+    _window_on_content_size_changed_callback_t,
     ctypes.c_void_p,
 ]
+
+
+_window_on_closing_callback_t = ctypes.CFUNCTYPE(
+    ctypes.c_int,
+    ctypes.POINTER(_Window),
+    ctypes.c_void_p,
+)
 
 
 # void uiWindowOnClosing(
@@ -73,11 +83,7 @@ _window_on_closing = libui.uiWindowOnClosing
 _window_on_closing.restype = None
 _window_on_closing.argtypes = [
     ctypes.POINTER(_Window),
-    ctypes.CFUNCTYPE(
-        ctypes.c_int,
-        ctypes.POINTER(_Window),
-        ctypes.c_void_p,
-    ),
+    _window_on_closing_callback_t,
     ctypes.c_void_p,
 ]
 
@@ -174,10 +180,10 @@ class Window(control.Control):
         def _on_resize(window, data):
             return self.on_resize()
 
-        cb = _window_on_closing.argtypes[1](_on_closing)
+        cb = _window_on_closing_callback_t(_on_closing)
         _window_on_closing(self.window, cb, None)
         self.callbacks += [cb]
-        cb = _window_on_content_size_changed.argtypes[1](_on_resize)
+        cb = _window_on_content_size_changed_callback_t(_on_resize)
         _window_on_content_size_changed(self.window, cb, None)
         self.callbacks += [cb]
 
