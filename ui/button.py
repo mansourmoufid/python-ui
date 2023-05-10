@@ -1,4 +1,5 @@
 import ctypes
+import typing
 
 from . import control
 from . import decode, encode
@@ -54,16 +55,20 @@ _new_button.argtypes = [
 
 class Button(control.Control):
 
-    def __init__(self, text, on_clicked=None, **kwargs):
+    def __init__(
+        self,
+        text: str,
+        on_clicked: typing.Optional[typing.Callable] = None,
+        **kwargs
+    ):
 
         super().__init__(**kwargs)
 
-        assert isinstance(text, str)
         self.button = _new_button(encode(text))
         self.ctrl = self.button
 
-        self.callbacks = []
-        self.set_on_clicked(on_clicked)
+        self.callbacks: typing.List[typing.Callable] = []
+        self.set_on_clicked(on_clicked or self.on_clicked)
 
     def text(self, x=None):
         assert x is None or isinstance(x, str)
@@ -71,6 +76,9 @@ class Button(control.Control):
             return decode(_button_text(self.button))
         else:
             _button_set_text(self.button, encode(x))
+
+    def on_clicked(self):
+        pass
 
     def set_on_clicked(self, f=None):
 
@@ -84,6 +92,3 @@ class Button(control.Control):
         cb = _button_on_clicked.argtypes[1](_on_clicked)
         _button_on_clicked(self.button, cb, None)
         self.callbacks += [cb]
-
-    def on_clicked(self):
-        pass
