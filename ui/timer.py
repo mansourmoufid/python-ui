@@ -30,10 +30,14 @@ class Timer(object):
 
         def _f(data):
             try:
-                return f()
+                if f():
+                    return 1
+                return 0
+            except KeyboardInterrupt:
+                return 0
             except:  # noqa
                 traceback.print_exc(file=sys.stderr)
-                return 0
+                return 1
 
         cb = _timer.argtypes[1](_f)
         _timer(int(float(t) * 1000), cb, None)
