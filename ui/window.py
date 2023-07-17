@@ -1,7 +1,8 @@
 import ctypes
+import typing
 
 from . import control
-from . import decode, encode
+from . import decode, encode, SizeType
 from . import libui
 
 
@@ -149,21 +150,22 @@ _new_window.argtypes = [
 
 class Window(control.Control):
 
-    def __init__(self, name=None, size=None, menubar=False, **kwargs):
+    def __init__(
+        self,
+        name: typing.Optional[str] = None,
+        size: typing.Optional[SizeType] = None,
+        menubar: bool = False,
+        **kwargs
+    ):
 
-        border = kwargs.pop('border', True)
-        margined = kwargs.pop('margined', True)
+        border: bool = kwargs.pop('border', True)
+        margined: bool = kwargs.pop('margined', True)
 
-
-        assert name is None or isinstance(name, str)
         super().__init__(**kwargs)
 
-        assert size is None or isinstance(size, (list, tuple))
-        self.width, self.height = size or (100, 100)
-
-        assert isinstance(menubar, bool)
-        assert isinstance(border, bool)
-        assert isinstance(margined, bool)
+        if size is None:
+            size = (100, 100)
+        self.width, self.height = size
 
         self.window = _new_window(
             encode(name),
@@ -172,7 +174,7 @@ class Window(control.Control):
             1 if menubar else 0
         )
         self.ctrl = self.window
-        self.callbacks = []
+        self.callbacks: typing.List[typing.Callable] = []
 
         def _on_closing(window, data):
             return self.on_closing()
@@ -190,15 +192,17 @@ class Window(control.Control):
         self.border(border)
         self.margined(margined)
 
-    def title(self, x=None):
-        assert x is None or isinstance(x, str)
+    def title(self, x: typing.Optional[str] = None) -> typing.Optional[str]:
         if x is None:
             return decode(_window_title(self.window))
         else:
             _window_set_title(self.window, encode(x))
+            return None
 
-    def size(self, x=None):
-        assert x is None or isinstance(x, (list, tuple))
+    def size(
+        self,
+        x: typing.Optional[SizeType] = None,
+    ) -> typing.Optional[SizeType]:
         if x is None:
             w = ctypes.c_int()
             h = ctypes.c_int()
@@ -209,37 +213,42 @@ class Window(control.Control):
             )
             return (w.value, h.value)
         else:
-            w, h = x
-            assert isinstance(w, (float, int))
-            assert isinstance(h, (float, int))
-            _window_set_content_size(self.window, int(w), int(h))
+            width, height = x
+            _window_set_content_size(self.window, int(width), int(height))
+            return None
 
-    def border(self, x=None):
+    def border(
+        self,
+        x: typing.Optional[bool] = None,
+    ) -> typing.Optional[bool]:
         assert x is None or isinstance(x, bool)
         if x is None:
             return _window_borderless(self.window) == 0
         else:
             _window_set_borderless(self.window, 0 if x else 1)
+            return None
 
-    def on_closing(self):
+    def on_closing(self) -> int:
         self.destroy()
         return 0
 
-    def on_resize(self):
+    def on_resize(self) -> None:
         pass
 
-    def set_child(self, child):
-        assert isinstance(child, control.Control)
+    def set_child(self, child: control.Control) -> None:
         _window_set_child(self.window, child.control())
         child.parent = self
 
-    def margined(self, x=None):
-        assert x is None or isinstance(x, bool)
+    def margined(
+        self,
+        x: typing.Optional[bool] = None,
+    ) -> typing.Optional[bool]:
         if x is None:
             return not _window_margined(self.window) == 0
         else:
             _window_set_margined(self.window, 1 if x else 0)
+            return None
 
-    def __add__(self, x):
+    def __add__(self, x: control.Control) -> control.Control:
         self.set_child(x)
         return self

@@ -148,3 +148,7 @@ def encode(s) -> typing.Optional[bytes]:
 
 def nop():
     pass
+
+
+Dimension = typing.Union[float, int]
+SizeType = typing.Tuple[Dimension, Dimension]
