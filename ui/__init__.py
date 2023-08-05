@@ -82,32 +82,35 @@ _quit.restype = None
 _quit.argtypes = []
 
 
+_on_should_quit_callback_t = ctypes.CFUNCTYPE(
+    ctypes.c_int,
+    ctypes.c_void_p,
+)
+
+
 # void uiOnShouldQuit(int (*f)(void *data), void *data);
 _on_should_quit = libui.uiOnShouldQuit
 _on_should_quit.restype = None
 _on_should_quit.argtypes = [
-    ctypes.CFUNCTYPE(
-        ctypes.c_int,
-        ctypes.c_void_p,
-    ),
+    _on_should_quit_callback_t,
     ctypes.c_void_p,
 ]
 
 
 class UI(object):
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         options = _InitOptions()
         ctypes.memset(ctypes.pointer(options), 0, ctypes.sizeof(options))
         assert _init(ctypes.pointer(options)) is None
 
-        def __on_should_quit(data):
+        def __on_should_quit(data: ctypes.c_void_p) -> int:
             return self.on_should_quit()
 
-        cb = _on_should_quit.argtypes[0](__on_should_quit)
+        cb = _on_should_quit_callback_t(__on_should_quit)
         _on_should_quit(cb, None)
-        self.callbacks = [cb]
+        self.callbacks: typing.List[typing.Callable[[], int]] = [cb]
 
     def main(self):
         _main()
@@ -121,6 +124,9 @@ class UI(object):
 
     def __del__(self):
         _uninit()
+        for cb in tuple(self.callbacks):
+            self.callbacks.remove(cb)
+            del cb
 
 
 _encoding = 'utf-8'
@@ -146,7 +152,7 @@ def encode(s) -> typing.Optional[bytes]:
     return x.encode(_encoding) + b'\x00' * 2
 
 
-def nop():
+def nop() -> None:
     pass
 
 
