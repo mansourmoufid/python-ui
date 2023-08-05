@@ -17,6 +17,8 @@ test:
 cleanup:
 	rm -f ui/*.pyc ui/*.pyd ui/*.pyo
 	rm -rf ui/__pycache__
+	rm -rf .mypy_cache
+	rm -rf .pytest_cache
 
 .PHONY: clean
 clean: cleanup
