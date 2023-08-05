@@ -1,4 +1,5 @@
 import ctypes
+import typing
 
 from . import control
 from . import decode, encode
@@ -62,32 +63,33 @@ _new_group.argtypes = [
 
 class Group(control.Control):
 
-    def __init__(self, title, margined=False, **kwargs):
+    def __init__(self, title: str, margined: bool = False, **kwargs) -> None:
         super().__init__(**kwargs)
-        assert isinstance(title, str)
         self.group = _new_group(encode(title))
         self.ctrl = self.group
         self.margined(margined)
 
-    def title(self, x=None):
-        assert x is None or isinstance(x, str)
+    def title(self, x: typing.Optional[str] = None) -> typing.Optional[str]:
         if x is None:
             return decode(_group_title(self.group))
         else:
             _group_set_title(self.group, encode(x))
+        return None
 
-    def set_child(self, x):
-        assert isinstance(x, control.Control)
+    def set_child(self, x: control.Control) -> None:
         _group_set_child(self.group, x.control())
 
-    def margined(self, x=None):
-        assert x is None or isinstance(x, bool)
+    def margined(
+        self,
+        x: typing.Optional[bool] = None,
+    ) -> typing.Optional[bool]:
         if x is None:
             return not _group_margined(self.group) == 0
         else:
             _group_set_margined(self.group, 1 if x else 0)
+        return None
 
-    def __add__(self, x):
+    def __add__(self, x: control.Control) -> control.Control:
         assert isinstance(x, control.Control)
         self.set_child(x)
         return self
